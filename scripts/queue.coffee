@@ -107,15 +107,8 @@ module.exports = (robot) ->
 
   
   robot.respond /student 9000/i, (msg)->
-    msg.get /v1/users/list?format=json, (data)->
-      res = ""
-      _.each data, (user)->
-        _.each user, (val, key)->  
-          res += "#{val} #{key}"
-
-      msg.send "Hello"
     msg.send "hmm?"
-    
+
   robot.respond /student q(ueue)?/i, (msg) ->
     if _.isEmpty robot.brain.data.instructorQueue
       msg.send "Student queue is empty"
