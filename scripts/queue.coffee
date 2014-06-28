@@ -113,8 +113,9 @@ module.exports = (robot) ->
         _.each user, (val, key)->  
           res += "#{val} #{key}"
 
-      msg.send res
-
+      msg.send "Hello"
+    msg.send "hmm?"
+    
   robot.respond /student q(ueue)?/i, (msg) ->
     if _.isEmpty robot.brain.data.instructorQueue
       msg.send "Student queue is empty"
