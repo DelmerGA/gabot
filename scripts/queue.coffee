@@ -107,7 +107,7 @@ module.exports = (robot) ->
 
   
   robot.respond /student 9000/i, (msg)->
-    msg.get "/v1/users/list.json", (data)->
+    robot.get "/v1/users/list.json", (data)->
       msg.send data
     msg.send "hmm?"
 
