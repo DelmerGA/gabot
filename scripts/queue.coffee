@@ -108,14 +108,10 @@ module.exports = (robot) ->
   
 
   robot.respond /student q(ueue)?/i, (msg) ->
-    console.log msg
-    console.log robot.brain.data.users
-    msg.get /v1/users/list, (data)->
-      console.log data
-    #if _.isEmpty robot.brain.data.instructorQueue
-    #  msg.send "Student queue is empty"
-    #else
-    #  msg.send stringifyQueue()
+    if _.isEmpty robot.brain.data.instructorQueue
+      msg.send "Student queue is empty"
+    else
+      msg.send stringifyQueue()
 
   robot.respond /empty q(ueue)?/i, (msg) ->
     instructors = ["RafiSofaer", "AlexNotov","MarkusGuehrs", "StuartJones",  "DelmerReed", "SpencerEldred", "TimGarcia", "TriptaGupta", "ColtSteel", "JackieHerrlin"]
