@@ -77,6 +77,23 @@ module.exports = (robot) ->
     else
       msg.reply "you weren't in the queue."
 
+
+
+  robot.respond /hop to @(\w+)/i, (msg) ->
+    name = msg.match[1]
+    student = {}
+    robot.brain.data.instructorQueue = _.filter robot.brain.data.instructorQueue, (currStudent)->
+      if currStudent.name == name
+        student = currStudent
+        false
+      else
+        true
+  
+    student.poppedAt = new Date()
+    student.poppedBy = msg.message.user.mention_name || msg.message.user.name
+    robot.brain.data.instructorQueuePops.push student
+    msg.reply "go help @#{student.name} with #{student.reason}, queued at #{tfmt student.queuedAt}"
+
   robot.respond /(pop )?student( pop)?/i, (msg) ->
     return unless msg.match[1]? || msg.match[2]?
     if _.isEmpty robot.brain.data.instructorQueue
@@ -88,7 +105,11 @@ module.exports = (robot) ->
       robot.brain.data.instructorQueuePops.push student
       msg.reply "go help @#{student.name} with #{student.reason}, queued at #{tfmt student.queuedAt}"
 
+  
+
   robot.respond /student q(ueue)?/i, (msg) ->
+    console.log msg
+    console.log robot.brain.data.users
     if _.isEmpty robot.brain.data.instructorQueue
       msg.send "Student queue is empty"
     else
