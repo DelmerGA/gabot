@@ -110,7 +110,8 @@ module.exports = (robot) ->
   robot.respond /student q(ueue)?/i, (msg) ->
     console.log msg
     console.log robot.brain.data.users
-    msg.send robot.brain.data.users
+    msg.get /v1/users/list, (data)->
+      console.log data
     #if _.isEmpty robot.brain.data.instructorQueue
     #  msg.send "Student queue is empty"
     #else
