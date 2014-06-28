@@ -105,12 +105,6 @@ module.exports = (robot) ->
       robot.brain.data.instructorQueuePops.push student
       msg.reply "go help @#{student.name} with #{student.reason}, queued at #{tfmt student.queuedAt}"
 
-  
-  robot.respond /student 9000/i, (msg)->
-    robot.get "/v1/users/list.json", (data)->
-      msg.send data
-    msg.send "hmm?"
-
 
   robot.respond /student q(ueue)?/i, (msg) ->
     if _.isEmpty robot.brain.data.instructorQueue
