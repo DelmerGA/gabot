@@ -35,7 +35,7 @@ module.exports = (robot) ->
       reply += "#{student.name} at #{tfmt student.queuedAt} for #{student.reason}"
       reply
     , ""
-
+  
   popStudent = ->
     robot.brain.data.instructorQueue.shift()
 
@@ -113,7 +113,7 @@ module.exports = (robot) ->
       msg.send stringifyQueue()
 
   robot.respond /empty q(ueue)?/i, (msg) ->
-    instructors = ["RafiSofaer", "AlexNotov","MarkusGuehrs", "StuartJones",  "DelmerReed", "SpencerEldred", "TimGarcia", "TriptaGupta", "ColtSteel", "JackieHerrlin"]
+    instructors = ["RafiSofaer", "AlexNotov","MarkusGuehrs", "StuartJones",  "DelmerReed","Elie Schoppik", "TriptaGupta", "ColtSteel"]
     if instructors.indexOf(msg.message.user.mention_name) != -1
       robot.brain.data.instructorQueue = []
       msg.reply "cleared the queue"
@@ -121,6 +121,17 @@ module.exports = (robot) ->
   robot.respond /q(ueue)?[ .]length/i, (msg) ->
     _.tap robot.brain.data.instructorQueue.length, (length) ->
       msg.send "Current queue length is #{length} students."
+  
+  robot.respond /pops/i, (msg) ->
+    stats = {}
+    instructors = ["RafiSofaer", "AlexNotov","MarkusGuehrs", "StuartJones",  "DelmerReed","Elie Schoppik", "TriptaGupta", "ColtSteel"]
+    if instructors.indexOf(msg.message.user.mention_name) != -1
+      _.each robot.brain.data.instructorQueuePops, (student) ->
+        stats[student.poppedBy] = stats[student.poppedBy] || 0
+        stats[student.poppedBy] += 1
+      msg.send "/code " + JSON.stringify(stats)
+    else
+      msg.send "oops"
 
   robot.router.get "/queue/pops", (req, res) ->
     res.setHeader 'Content-Type', 'text/html'
