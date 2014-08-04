@@ -124,12 +124,14 @@ module.exports = (robot) ->
   
   robot.respond /pops/i, (msg) ->
     stats = {}
-    instructors = ["RafiSofaer", "AlexNotov","MarkusGuehrs", "StuartJones",  "DelmerReed","Elie Schoppik", "TriptaGupta", "ColtSteel"]
+    instructors = ["Shell", "RafiSofaer", "AlexNotov","MarkusGuehrs", "StuartJones",  "DelmerReed","ElieSchoppik", "TriptaGupta", "ColtSteel"]
     if instructors.indexOf(msg.message.user.mention_name) != -1
       _.each robot.brain.data.instructorQueuePops, (student) ->
         stats[student.poppedBy] = stats[student.poppedBy] || 0
         stats[student.poppedBy] += 1
-      msg.send "/code " + JSON.stringify(stats)
+      
+      msg.send _(stats).reduce (acc, stat, name)->
+        "#{name}: #{stat}\n"
     else
       msg.send "oops"
 
