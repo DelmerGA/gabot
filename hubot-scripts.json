@@ -1,7 +1,6 @@
 [
   "auth.coffee",
   "redis-brain.coffee",
-  "shipit.coffee",
   "announce.coffee",
   "reload.coffee",
   "remember.coffee",
