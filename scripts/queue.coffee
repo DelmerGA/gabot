@@ -135,7 +135,7 @@ module.exports = (robot) ->
         stats[student.poppedBy] += 1
       
       msg.send _(stats).reduce (response, stat, name)->
-        "#{name}: #{stat}"
+        response + "#{name}: #{stat}"
     else
       msg.send "oops"
 
