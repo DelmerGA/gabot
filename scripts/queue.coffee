@@ -20,6 +20,10 @@ tfmt   = (time) -> moment(time).format 'MMM Do, h:mm:ss a'
 
 
 module.exports = (robot) ->
+  bootstrapify = (res) ->
+    res.write '<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"></link>'
+    res.write '<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>'
+
   robot.brain.data.instructorQueue ?= []
   robot.brain.data.instructorQueuePops ?= []
 
@@ -49,8 +53,11 @@ module.exports = (robot) ->
   robot.respond /q(ueue)? me for (.+)/i, (msg) ->
     name = msg.message.user.mention_name || msg.message.user.name
     reason = msg.match[2]
+    filteredReason = reason.replace(/help with|help/ig, "").replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ")
     if _.any(robot.brain.data.instructorQueue, (student) -> student.name == name)
       msg.send "#{name} is already queued"
+    else if filteredReason.match(/\w+/g).length < 3
+      msg.send "I'm sorry #{name}, I'm afraid I can't do that. Please clarify:#{filteredReason}" 
     else
       queueStudent name, reason
       msg.send "Current queue is: #{stringifyQueue()}"
@@ -116,7 +123,7 @@ module.exports = (robot) ->
     instructors = ["RafiSofaer", "AlexNotov","MarkusGuehrs", "StuartJones",  "DelmerReed","Elie Schoppik", "TriptaGupta", "ColtSteel"]
     if instructors.indexOf(msg.message.user.mention_name) != -1
       robot.brain.data.instructorQueue = []
-      msg.reply "cleared the queue"
+      msg.reply "cleared the queue\n" + stringifyQueue()
 
   robot.respond /q(ueue)?[ .]length/i, (msg) ->
     _.tap robot.brain.data.instructorQueue.length, (length) ->
