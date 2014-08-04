@@ -128,7 +128,7 @@ module.exports = (robot) ->
   
   robot.respond /pops/i, (msg) ->
     stats = {}
-    instructors = ["Shell", "RafiSofaer", "AlexNotov","MarkusGuehrs", "StuartJones",  "DelmerReed","ElieSchoppik", "TriptaGupta", "ColtSteel"]
+    instructors = ["Shell", "RafiSofaer", "AlexNotov","MarkusGuehrs", "StuartJones",  "DelmerReed","elieschoppik", "TriptaGupta", "ColtSteel"]
     if instructors.indexOf(msg.message.user.mention_name) != -1
       _.each robot.brain.data.instructorQueuePops, (student) ->
         stats[student.poppedBy] = stats[student.poppedBy] || 0
