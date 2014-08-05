@@ -49,7 +49,7 @@ module.exports = (robot) ->
   robot.respond /q(ueue)? me for (.+)/i, (msg) ->
     today = Date.now()
     recentStudents = _(robot.brain.data.instructorQueue).filter (student)->
-      return student.queuedAt - today < 10800000
+      return today - Date.now() < 43200000
 
     robot.brain.data.instructorQueue = recentStudents
     name = msg.message.user.mention_name || msg.message.user.name
