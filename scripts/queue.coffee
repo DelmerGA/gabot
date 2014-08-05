@@ -47,10 +47,15 @@ module.exports = (robot) ->
       msg.reply "usage: bot queue me for [reason]"
 
   robot.respond /q(ueue)? me for (.+)/i, (msg) ->
+    today = Date.now()
+    recentStudents = _(robot.brain.data.instructorQueue).filter (student)->
+      return student.queuedAt - today < 10800000
+
+    robot.brain.data.instructorQueue = recentStudents
     name = msg.message.user.mention_name || msg.message.user.name
     reason = msg.match[2]
     filteredReason = reason.replace(/help with|help/ig, " ").replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g," ").replace(/\s{2,}/g," ").trim() || "help with ..."
-    console.log(filteredReason)
+    
     if _.any(robot.brain.data.instructorQueue, (student) -> student.name == name)
       msg.send "#{name} is already queued"
     else if filteredReason.match(/\w+/g).length < 3
