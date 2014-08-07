@@ -132,8 +132,9 @@ module.exports = (robot) ->
             student.reason.match(reasonsExp).length > 2 && student != qStudent
           if simStdnts.length
             message += "\nThese student(s) might be similar to you..."
-            simStdnts.reduce (student)->
+            message += simStdnts.reduce((acc, student)->
               "\n #{student.name}: #{student.reason}"
+            , "")
         message += "\n please watch for students queueing with similar issues"    
       msg.send message
 
