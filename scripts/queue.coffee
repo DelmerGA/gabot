@@ -121,7 +121,7 @@ module.exports = (robot) ->
       msg.send "Student queue is empty"
     else
       message = stringifyQueue()
-      if robot.brain.data.instructorQueue.length > 0
+      if robot.brain.data.instructorQueue.length > 5
         message += "\n\n The Queue is getting pretty big..."
         qStudent = _(robot.brain.data.instructorQueue).find (student)->
           student.name == name
