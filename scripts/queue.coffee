@@ -134,8 +134,7 @@ module.exports = (robot) ->
             message += "\nThese student(s) might be similar to you..."
             simStdnts.reduce (student)->
               "\n #{student.name}: #{student.reason}"
-          else 
-            message += "please watch for students queueing with similar issues"
+      message += "\n please watch for students queueing with similar issues"    
       msg.send message
 
 
