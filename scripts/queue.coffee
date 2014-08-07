@@ -128,7 +128,8 @@ module.exports = (robot) ->
         if qStudent
           reasonsExp = new RegExp(qStudent.reason.replace(/\W+|\s/g," ").split(/\s+/).filter((wrd) -> wrd.length > 2 ).join(" ").replace(/\s+/g, "|"), "gi")
           simStdnts = _.filter robot.brain.data.instructorQueue, (student)->
-            student.reason.match(reasonsExp).length > 2 && student != qStudent
+            result = student.reason.match(reasonsExp)
+            result && result.length > 2 && student != qStudent
           if simStdnts && simStdnts.length > 0
             message += "\nThese student(s) might be similar to you..."
             message += simStdnts.reduce((acc, student)->
