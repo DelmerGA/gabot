@@ -116,11 +116,26 @@ module.exports = (robot) ->
 
 
   robot.respond /student q(ueue)?/i, (msg) ->
-    name = msg.message.user.mention_name
+    name = msg.message.user.mention_name || msg.message.user.name
     if _.isEmpty robot.brain.data.instructorQueue
       msg.send "Student queue is empty"
     else
       message = stringifyQueue()
+      if robot.brain.data.instructorQueue.length > 0
+        message += "\n\n The Queue is getting pretty big..."
+        qStudent = _(robot.brain.data.instructorQueue).find (student)->
+          student.name == name
+        if qStudent
+          console.log qStudent
+          reasonsExp = new RegExp(qStudent.reason.replace(/\W+|\s/g," ").split(/\s+/).filter((wrd) -> wrd.length > 2 ).join(" ").replace(/\s+/g, "|"), "gi")
+          simStdnts = _(robot.brain.data.instructorQueue).filter (student)->
+            student.reason.match(reasonsExp).length > 2 && student != qStudent
+          if simStdnts.length
+            message += "\nThese student(s) might be similar to you..."
+            simStdnts.reduce (student)->
+              "\n #{student.name}: #{student.reason}"
+          else 
+            message += "please watch for students queueing with similar issues"
       msg.send message
 
 
