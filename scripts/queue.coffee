@@ -126,7 +126,7 @@ module.exports = (robot) ->
         qStudent = _(robot.brain.data.instructorQueue).find (student)->
           student.name == name
         if qStudent
-          reasonsExp = new RegExp(qStudent.reason.replace(/\W+|\s/g," ").split(/\s+/).filter((wrd) -> wrd.length > 2 ).join(" ").replace(/\s+/g, "|"), "gi")
+          reasonsExp = new RegExp(qStudent.reason.replace(/\W+|\s|help with|help/g," ").split(/\s+/).filter((wrd) -> wrd.length > 2 ).join(" ").replace(/\s+/g, "|"), "gi")
           simStdnts = _.filter robot.brain.data.instructorQueue, (student)->
             result = student.reason.match(reasonsExp)
             !!(result && result.length > 1 && student != qStudent)
