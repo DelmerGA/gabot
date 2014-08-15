@@ -126,7 +126,7 @@ module.exports = (robot) ->
     msg.send verbiage.join("\n")
 
   robot.respond /karma (\S+[^-\s])$/i, (msg) ->
-    return if msg.message.room.toLowerCase().indexOf('business') != -1
+    return if msg.message.room.match(/\A\s*strictly\s*business\z/i) != -1
     match = msg.match[1].toLowerCase().replace /^@/, ''
     if match != "best" && match != "worst"
       msg.send "\"#{match}\" has #{karma.get(match)} karma."
